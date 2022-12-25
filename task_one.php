@@ -1,6 +1,6 @@
 <?php 
-namespace Controller;
-require ('Controller/TaskOne.php');
+namespace Classes;
+require ('Classes/TaskOne.php');
 $task = new TaskOne;
 $task_one = $task->index();
 require('common/header.php'); 
@@ -11,10 +11,14 @@ require('common/header.php');
         <th>Category Name</th>
         <th>Total Items</th>
       </tr>
-     <?php foreach($task_one as $task){ ?>
+     <?php foreach($task_one as $category){ ?>
         <tr>
-            <td><?php echo $task['Name']; ?></td>
-            <td><?php echo $task['item_count']; ?></td>
+            <td><?php echo $category['Name']; ?></td>
+            <td>
+              <?php foreach($task->parentItemCount($category['ParentcategoryId']) as $item ){ ?>
+                  <?php echo $item['item_count']; ?>
+                <?php } ?>
+            </td>
         </tr>
       <?php  } ?>
   </table>

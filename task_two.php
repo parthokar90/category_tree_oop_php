@@ -1,7 +1,7 @@
 <?php 
-namespace Controller;
+namespace Classes;
 require('common/header.php'); 
-require ('Controller/TaskTwo.php');
+require ('Classes/TaskTwo.php');
 $category = new TaskTwo;
 $parentCat = $category->parentCategory();
 ?>
@@ -48,17 +48,27 @@ ul, #myUL {
 
 <ul id="myUL">
   <?php foreach($parentCat as $cat) { ?>  
-  <li><span class="caret"><?php echo $cat['Name']; ?></span>
+  <li>
+
+   <!-- parent category name with item count -->
+    <span class="caret">
+        <?php echo $cat['Name']; ?>
+              <?php foreach($category->parentItemCount($cat['ParentcategoryId']) as $item ){ ?>
+                  (<?php echo $item['item_count']; ?>)
+              <?php } ?>
+    </span>
+
+    <!-- sub category with item count -->
     <ul class="nested">
       <?php foreach($category->subCategory($cat['ParentcategoryId']) as $sub){ ?>  
-      <li><?php echo $sub['Name']; ?>(<?php echo $sub['item_count']; ?>)</li>
+           <li><?php echo $sub['Name']; ?>(<?php echo $sub['item_count']; ?>)</li>
       <?php } ?>
     </ul>
+
     <?php } ?>
+
   </li>
 </ul>
-
-
 <script>
 var toggler = document.getElementsByClassName("caret");
 var i;
@@ -70,9 +80,6 @@ for (i = 0; i < toggler.length; i++) {
   });
 }
 </script>
-
-
-  
 
 <?php require('common/footer.php'); ?>
 
